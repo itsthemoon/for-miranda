@@ -1,0 +1,1471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>7 Years of Us</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Mono:wght@300;400&family=Caveat:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --white: #FFFFFF;
+      --cream: #FFF9F0;
+      --sky: #E3F2FD;
+      --aegean: #0077B6;
+      --turquoise: #00B4D8;
+      --light-blue: #ADE8F4;
+      --pale-blue: #CAF0F8;
+      --pink: #FF6B8A;
+      --coral: #FF8A65;
+      --gold: #FFB703;
+      --sun: #FFD166;
+      --navy: #023047;
+      --sand: #F5E6D0;
+      --olive: #606C38;
+      --text: #1B2838;
+      --text-light: #5A6B7D;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--white);
+      color: var(--text);
+      font-family: 'Cormorant Garamond', serif;
+      overflow-x: hidden;
+      cursor: default;
+    }
+
+    /* === TERMINAL BOOT === */
+    #boot {
+      position: fixed;
+      inset: 0;
+      background: #0d0d0d;
+      color: #33ff33;
+      font-family: 'DM Mono', monospace;
+      font-size: clamp(11px, 1.5vw, 14px);
+      padding: 40px;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      overflow: hidden;
+    }
+
+    #boot-lines { line-height: 1.8; }
+    #boot-lines p { opacity: 0; animation: fadeIn 0.1s forwards; white-space: pre-wrap; }
+    #boot-lines p.blink::after {
+      content: '\2588';
+      animation: blink 0.7s step-end infinite;
+    }
+
+    #boot-skip {
+      position: absolute;
+      bottom: 30px;
+      right: 40px;
+      color: #33ff3366;
+      font-size: 12px;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+    #boot-skip:hover { color: #33ff33; }
+
+    @keyframes fadeIn { to { opacity: 1; } }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* === MAIN === */
+    #main { opacity: 0; transition: opacity 1.5s ease; }
+    #main.visible { opacity: 1; }
+
+    /* === HERO === */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(170deg, #E3F2FD 0%, #B3E5FC 25%, #81D4FA 50%, #4FC3F7 75%, #0288D1 100%);
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      bottom: -5%;
+      left: -10%;
+      right: -10%;
+      height: 30%;
+      background: radial-gradient(ellipse at center, rgba(255,255,255,0.4) 0%, transparent 70%);
+      animation: shimmer 4s ease-in-out infinite;
+    }
+
+    @keyframes shimmer {
+      0%, 100% { opacity: 0.5; transform: translateY(0); }
+      50% { opacity: 1; transform: translateY(-10px); }
+    }
+
+    .hero-content { position: relative; text-align: center; padding: 40px; }
+
+    .hero-eyebrow {
+      font-family: 'Caveat', cursive;
+      font-size: clamp(20px, 3vw, 28px);
+      color: var(--navy);
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: riseUp 1s 0.5s forwards;
+    }
+
+    .hero-title {
+      font-size: clamp(56px, 11vw, 140px);
+      font-weight: 300;
+      line-height: 0.9;
+      color: var(--white);
+      margin-bottom: 32px;
+      opacity: 0;
+      animation: riseUp 1s 0.8s forwards;
+      text-shadow: 0 4px 30px rgba(2, 48, 71, 0.2);
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--gold);
+      text-shadow: 0 2px 20px rgba(255, 183, 3, 0.3);
+    }
+
+    .hero-sub {
+      font-size: clamp(16px, 2.5vw, 22px);
+      font-weight: 300;
+      color: var(--navy);
+      font-style: italic;
+      max-width: 500px;
+      line-height: 1.6;
+      opacity: 0;
+      animation: riseUp 1s 1.1s forwards;
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: var(--navy);
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      opacity: 0;
+      animation: riseUp 1s 2s forwards;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--navy), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.3; transform: scaleY(1); }
+      50% { opacity: 1; transform: scaleY(1.2); }
+    }
+
+    @keyframes riseUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* === WAVE DIVIDERS === */
+    .wave-divider { display: block; width: 100%; line-height: 0; margin: -1px 0; }
+    .wave-divider svg { display: block; width: 100%; height: auto; }
+
+    /* === CHAPTERS === */
+    .chapters { background: var(--white); }
+
+    .chapter {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .chapter:nth-child(even) .chapter-photo { order: 2; }
+    .chapter:nth-child(even) .chapter-text { order: 1; }
+
+    .chapter-photo { position: relative; overflow: hidden; min-height: 400px; }
+
+    .chapter-photo img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.8s ease;
+    }
+
+    .chapter:hover .chapter-photo img { transform: scale(1.03); }
+
+    .chapter-photo-overlay { position: absolute; inset: 0; z-index: 1; }
+
+    .chapter-text {
+      padding: clamp(40px, 8vw, 100px) clamp(30px, 6vw, 80px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .chapter-label {
+      font-family: 'Caveat', cursive;
+      font-size: clamp(16px, 2vw, 22px);
+      margin-bottom: 8px;
+    }
+
+    .chapter-year {
+      font-size: clamp(48px, 7vw, 88px);
+      font-weight: 300;
+      line-height: 1;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .chapter-title {
+      font-size: clamp(20px, 3vw, 32px);
+      font-style: italic;
+      margin-bottom: 28px;
+    }
+
+    .chapter-body {
+      font-size: clamp(17px, 1.8vw, 21px);
+      line-height: 1.9;
+      color: var(--text-light);
+      font-weight: 300;
+      max-width: 500px;
+    }
+
+    .chapter-body strong { color: var(--text); font-weight: 400; }
+    .chapter-body em { font-style: italic; }
+
+    .chapter-tag {
+      display: inline-block;
+      margin-top: 24px;
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .ch1 .chapter-label, .ch1 .chapter-title, .ch1 .chapter-body em { color: var(--coral); }
+    .ch1 .chapter-tag { background: #FFF3E0; color: var(--coral); }
+    .ch1 .chapter-photo-overlay { background: linear-gradient(135deg, rgba(255,138,101,0.1), transparent); }
+    .ch1 .chapter-text { background: #FFFAF6; }
+
+    .ch2 .chapter-label, .ch2 .chapter-title, .ch2 .chapter-body em { color: var(--olive); }
+    .ch2 .chapter-tag { background: #F1F8E9; color: var(--olive); }
+    .ch2 .chapter-photo-overlay { background: linear-gradient(135deg, rgba(96,108,56,0.1), transparent); }
+    .ch2 .chapter-text { background: #F9FBF5; }
+
+    .ch3 .chapter-label, .ch3 .chapter-title { color: var(--gold); }
+    .ch3 .chapter-body em { color: #E09F00; }
+    .ch3 .chapter-tag { background: #FFF8E1; color: #B8860B; }
+    .ch3 .chapter-photo-overlay { background: linear-gradient(135deg, rgba(255,183,3,0.1), transparent); }
+    .ch3 .chapter-text { background: #FFFCF0; }
+
+    .ch4 .chapter-label, .ch4 .chapter-title, .ch4 .chapter-body em { color: var(--aegean); }
+    .ch4 .chapter-tag { background: var(--sky); color: var(--aegean); }
+    .ch4 .chapter-photo-overlay { background: linear-gradient(135deg, rgba(0,119,182,0.1), transparent); }
+    .ch4 .chapter-text { background: #F5FAFD; }
+
+    .ch5 .chapter-label, .ch5 .chapter-title, .ch5 .chapter-body em { color: var(--pink); }
+    .ch5 .chapter-tag { background: #FCE4EC; color: var(--pink); }
+    .ch5 .chapter-photo-overlay { background: linear-gradient(135deg, rgba(255,107,138,0.1), transparent); }
+    .ch5 .chapter-text { background: #FFF5F7; }
+
+    .ch6 .chapter-label, .ch6 .chapter-title { color: var(--turquoise); }
+    .ch6 .chapter-body em { color: #0097A7; }
+    .ch6 .chapter-tag { background: #E0F7FA; color: #0097A7; }
+    .ch6 .chapter-photo-overlay { background: linear-gradient(135deg, rgba(0,180,216,0.1), transparent); }
+    .ch6 .chapter-text { background: #F2FCFD; }
+
+    /* === GAME SECTION === */
+    .game-section {
+      background: #0B0E17;
+      min-height: 100vh;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(60px, 8vw, 120px) clamp(20px, 4vw, 60px);
+    }
+
+    .game-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 50% 40% at 30% 20%, rgba(88,28,135,0.25), transparent),
+        radial-gradient(ellipse 40% 50% at 70% 80%, rgba(180,83,9,0.12), transparent),
+        radial-gradient(ellipse 60% 30% at 50% 50%, rgba(30,58,138,0.15), transparent);
+    }
+
+    .game-stars { position: absolute; inset: 0; overflow: hidden; }
+    .game-stars span {
+      position: absolute;
+      width: 2px; height: 2px;
+      background: #fff;
+      border-radius: 50%;
+      animation: twinkle var(--dur, 3s) ease-in-out infinite;
+      animation-delay: var(--delay, 0s);
+    }
+    @keyframes twinkle { 0%, 100% { opacity: 0.15; } 50% { opacity: 0.8; } }
+
+    .game-container {
+      position: relative;
+      max-width: 680px;
+      width: 100%;
+      z-index: 1;
+    }
+
+    .game-progress {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: rgba(255,255,255,0.05);
+      z-index: 2;
+      border-radius: 2px;
+    }
+    .game-progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #7C3AED, var(--gold));
+      transition: width 0.6s ease;
+      width: 0%;
+      border-radius: 2px;
+    }
+
+    .game-intro { text-align: center; }
+
+    .game-intro-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #A78BFA;
+      margin-bottom: 24px;
+    }
+
+    .game-intro-title {
+      font-size: clamp(32px, 5vw, 56px);
+      font-weight: 300;
+      color: #F5F5F5;
+      line-height: 1.15;
+      margin-bottom: 20px;
+    }
+    .game-intro-title em { color: var(--gold); font-style: italic; }
+
+    .game-intro-sub {
+      font-size: clamp(16px, 2vw, 20px);
+      color: #9CA3AF;
+      font-style: italic;
+      font-weight: 300;
+      margin-bottom: 48px;
+      line-height: 1.7;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .game-btn {
+      display: inline-block;
+      padding: 16px 48px;
+      background: linear-gradient(135deg, #7C3AED, #A855F7);
+      color: #fff;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 500;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 24px rgba(124,58,237,0.4);
+      letter-spacing: 1px;
+    }
+    .game-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(124,58,237,0.6);
+    }
+    .game-btn.outline {
+      background: transparent;
+      border: 1px solid rgba(167,139,250,0.4);
+      color: #A78BFA;
+      box-shadow: none;
+      padding: 12px 36px;
+      font-size: 17px;
+    }
+    .game-btn.outline:hover {
+      background: rgba(167,139,250,0.1);
+      border-color: #A78BFA;
+      box-shadow: none;
+      transform: translateY(-1px);
+    }
+
+    .game-scene { animation: sceneFadeIn 0.8s ease forwards; }
+
+    @keyframes sceneFadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .scene-number {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #A78BFA;
+      margin-bottom: 20px;
+    }
+
+    .scene-title {
+      font-size: clamp(26px, 3.5vw, 40px);
+      font-weight: 300;
+      color: #F5F5F5;
+      margin-bottom: 28px;
+      line-height: 1.25;
+    }
+
+    .scene-body {
+      font-size: clamp(16px, 1.8vw, 20px);
+      line-height: 1.9;
+      color: #C4B5D4;
+      font-weight: 300;
+      margin-bottom: 36px;
+    }
+    .scene-body em { color: var(--gold); font-style: italic; }
+
+    .scene-choices { display: flex; flex-direction: column; gap: 14px; }
+
+    .scene-choice {
+      padding: 20px 28px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(167,139,250,0.15);
+      border-radius: 14px;
+      color: #E5E7EB;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(16px, 1.6vw, 19px);
+      font-weight: 300;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: left;
+      line-height: 1.5;
+    }
+    .scene-choice:hover {
+      background: rgba(167,139,250,0.1);
+      border-color: rgba(167,139,250,0.5);
+      transform: translateX(6px);
+    }
+    .scene-choice.picked {
+      background: rgba(167,139,250,0.12);
+      border-color: #A78BFA;
+      pointer-events: none;
+    }
+    .scene-choice.dimmed {
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    .scene-response {
+      padding: 24px 28px;
+      background: rgba(255,183,3,0.06);
+      border-left: 3px solid var(--gold);
+      border-radius: 0 12px 12px 0;
+      margin-top: 24px;
+      animation: sceneFadeIn 0.6s ease forwards;
+    }
+    .scene-response p {
+      font-size: clamp(16px, 1.8vw, 19px);
+      line-height: 1.8;
+      color: #D4C5A0;
+      font-weight: 300;
+      font-style: italic;
+    }
+
+    .game-reveal { text-align: center; }
+
+    .reveal-line {
+      font-size: clamp(17px, 2.2vw, 26px);
+      color: #9CA3AF;
+      font-weight: 300;
+      font-style: italic;
+      margin-bottom: 18px;
+      opacity: 0;
+      transform: translateY(12px);
+      line-height: 1.6;
+    }
+    .reveal-line.show { animation: revealIn 0.7s ease forwards; }
+    .reveal-line.highlight { color: var(--gold); font-style: normal; font-size: clamp(19px, 2.5vw, 30px); }
+    .reveal-line.big {
+      color: #F5F5F5;
+      font-size: clamp(28px, 4vw, 48px);
+      font-style: normal;
+      font-weight: 300;
+      margin-top: 28px;
+      margin-bottom: 28px;
+    }
+    .reveal-line.big em { color: var(--gold); }
+
+    .reveal-mapping {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .reveal-mapping .fantasy {
+      color: #A78BFA;
+      text-decoration: line-through;
+      text-decoration-color: rgba(167,139,250,0.4);
+    }
+    .reveal-mapping .arrow { color: #6B7280; }
+    .reveal-mapping .real { color: var(--gold); }
+
+    @keyframes revealIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* === WAX SEAL BUTTON === */
+    .seal-wrapper {
+      margin-top: 48px;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: opacity 1s ease, transform 1s ease;
+    }
+    .seal-wrapper.show {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .seal-hint {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #4B3F6B;
+      margin-bottom: 16px;
+    }
+
+    .seal-btn {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      background: radial-gradient(circle at 35% 35%, #6D2E46, #4A1A2E 60%, #2D0F1B);
+      box-shadow:
+        0 0 20px rgba(109,46,70,0.5),
+        0 0 60px rgba(109,46,70,0.2),
+        inset 0 2px 4px rgba(255,255,255,0.1);
+      transition: all 0.3s ease;
+      animation: sealPulse 2.5s ease-in-out infinite;
+    }
+    .seal-btn:hover {
+      transform: scale(1.1);
+      box-shadow:
+        0 0 30px rgba(167,139,250,0.5),
+        0 0 80px rgba(167,139,250,0.2),
+        inset 0 2px 4px rgba(255,255,255,0.15);
+    }
+    .seal-btn:active {
+      transform: scale(0.95);
+    }
+
+    .seal-icon {
+      font-size: 32px;
+      color: #C4A070;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+      pointer-events: none;
+    }
+
+    /* Shadow tendrils around the seal */
+    .seal-btn::before,
+    .seal-btn::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.4;
+      animation: shadowDrift 3s ease-in-out infinite;
+    }
+    .seal-btn::before {
+      inset: -8px;
+      border: 1px solid rgba(109,46,70,0.4);
+      animation-delay: 0s;
+    }
+    .seal-btn::after {
+      inset: -16px;
+      border: 1px solid rgba(109,46,70,0.2);
+      animation-delay: 0.5s;
+    }
+
+    @keyframes sealPulse {
+      0%, 100% { box-shadow: 0 0 20px rgba(109,46,70,0.5), 0 0 60px rgba(109,46,70,0.2), inset 0 2px 4px rgba(255,255,255,0.1); }
+      50% { box-shadow: 0 0 30px rgba(109,46,70,0.6), 0 0 80px rgba(109,46,70,0.3), inset 0 2px 4px rgba(255,255,255,0.1); }
+    }
+
+    @keyframes shadowDrift {
+      0%, 100% { transform: scale(1); opacity: 0.4; }
+      50% { transform: scale(1.08); opacity: 0.15; }
+    }
+
+    /* === PARCHMENT === */
+    .parchment-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.6s ease, background 0.6s ease;
+    }
+    .parchment-overlay.show {
+      opacity: 1;
+      pointer-events: auto;
+      background: rgba(0,0,0,0.7);
+    }
+
+    .parchment {
+      position: relative;
+      max-width: 480px;
+      width: 90%;
+      padding: 56px 48px;
+      background:
+        linear-gradient(135deg, #F5E6C8 0%, #ECD9B0 20%, #F0DFC0 50%, #E8D0A8 80%, #DFC498 100%);
+      border-radius: 4px;
+      box-shadow:
+        0 8px 40px rgba(0,0,0,0.4),
+        inset 0 0 40px rgba(139,109,63,0.15);
+      transform: scale(0.8) rotateX(10deg);
+      transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .parchment-overlay.show .parchment {
+      transform: scale(1) rotateX(0deg);
+    }
+
+    /* Rough edges */
+    .parchment::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 0% 0%, rgba(139,109,63,0.2), transparent 50%),
+        radial-gradient(ellipse at 100% 100%, rgba(139,109,63,0.15), transparent 50%),
+        radial-gradient(ellipse at 50% 0%, rgba(139,109,63,0.1), transparent 40%);
+      pointer-events: none;
+    }
+
+    /* Burnt/aged edge effect */
+    .parchment::after {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border: 2px solid transparent;
+      border-image: repeating-linear-gradient(
+        90deg,
+        rgba(139,109,63,0.3) 0px,
+        rgba(139,109,63,0.1) 4px,
+        transparent 6px,
+        rgba(139,109,63,0.2) 10px
+      ) 2;
+      pointer-events: none;
+    }
+
+    .parchment-seal {
+      text-align: center;
+      margin-bottom: 24px;
+      font-size: 28px;
+      opacity: 0.4;
+    }
+
+    .parchment-body {
+      font-family: 'Caveat', cursive;
+      font-size: clamp(20px, 3vw, 26px);
+      line-height: 1.7;
+      color: #3D2B1F;
+      text-align: center;
+    }
+
+    .parchment-body .greeting {
+      font-size: clamp(24px, 3.5vw, 32px);
+      font-weight: 600;
+      color: #5C3A1E;
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .parchment-body .clue-text {
+      display: block;
+      margin-bottom: 16px;
+      color: #4A3520;
+    }
+
+    .parchment-body .signoff {
+      display: block;
+      margin-top: 24px;
+      font-style: italic;
+      color: #6B4E37;
+    }
+
+    .parchment-close {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-size: 20px;
+      color: #8B6D3F;
+      cursor: pointer;
+      opacity: 0.5;
+      transition: opacity 0.3s;
+    }
+    .parchment-close:hover { opacity: 1; }
+
+    @media (max-width: 768px) {
+      .parchment { padding: 40px 32px; }
+    }
+
+    /* === FOOTER === */
+    .footer {
+      background: linear-gradient(180deg, var(--white), var(--sky));
+      padding: 60px 40px;
+      text-align: center;
+    }
+
+    .footer-text {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 3px;
+      color: var(--text-light);
+      text-transform: uppercase;
+    }
+
+    .footer-heart {
+      font-size: 28px;
+      margin: 16px 0;
+      animation: heartbeat 1.5s ease-in-out infinite;
+      color: var(--pink);
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      14% { transform: scale(1.15); }
+      28% { transform: scale(1); }
+      42% { transform: scale(1.1); }
+      56% { transform: scale(1); }
+    }
+
+    /* === SCROLL ANIMATIONS === */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(50px);
+      transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1), transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    .slide-left {
+      opacity: 0;
+      transform: translateX(-60px);
+      transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1), transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .slide-left.visible { opacity: 1; transform: translateX(0); }
+
+    .slide-right {
+      opacity: 0;
+      transform: translateX(60px);
+      transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1), transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .slide-right.visible { opacity: 1; transform: translateX(0); }
+
+    /* === WATER RIPPLES === */
+    .ripple {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 999;
+      border: 1.5px solid rgba(0, 180, 216, 0.35);
+      animation: rippleExpand 1.2s ease-out forwards;
+    }
+    .ripple::after {
+      content: '';
+      position: absolute;
+      inset: -8px;
+      border-radius: 50%;
+      border: 1px solid rgba(0, 180, 216, 0.15);
+      animation: rippleExpand 1.2s 0.15s ease-out forwards;
+      opacity: 0;
+    }
+
+    /* Darker ripple colors over the dark game section */
+    .ripple.dark {
+      border-color: rgba(167, 139, 250, 0.3);
+    }
+    .ripple.dark::after {
+      border-color: rgba(167, 139, 250, 0.12);
+    }
+
+    @keyframes rippleExpand {
+      0% {
+        width: 0; height: 0;
+        opacity: 1;
+      }
+      100% {
+        width: 80px; height: 80px;
+        opacity: 0;
+        margin-left: -40px;
+        margin-top: -40px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .chapter { grid-template-columns: 1fr; min-height: auto; }
+      .chapter-photo { min-height: 300px; }
+      .chapter:nth-child(even) .chapter-photo { order: 0; }
+      .chapter:nth-child(even) .chapter-text { order: 0; }
+      .chapter-text { padding: 40px 30px; }
+      .game-section { padding: 40px 20px; min-height: auto; }
+      .scene-choice { padding: 16px 20px; }
+      .ripple { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- TERMINAL BOOT -->
+<div id="boot">
+  <div id="boot-lines"></div>
+  <div id="boot-skip" onclick="skipBoot()">skip ↓</div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="main">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <p class="hero-eyebrow">Miranda & Jackson — est. 2019</p>
+      <h1 class="hero-title">Seven<br><em>Years</em><br>of Us</h1>
+      <p class="hero-sub">You followed the clues all the way here.<br>Now let me take you back to where it started.</p>
+    </div>
+    <div class="hero-scroll">
+      <span>scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <div class="wave-divider">
+    <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="#FFFFFF"/>
+    </svg>
+  </div>
+
+  <!-- CHAPTERS -->
+  <div class="chapters">
+    <div class="chapter ch1">
+      <div class="chapter-photo fade-in">
+        <img src="photos/congo-river.jpg" alt="Jackson and Miranda at Congo River" />
+        <div class="chapter-photo-overlay"></div>
+      </div>
+      <div class="chapter-text slide-right">
+        <p class="chapter-label">Chapter One — The Beginning</p>
+        <h2 class="chapter-year">2019</h2>
+        <h3 class="chapter-title">Congo River, Apopka</h3>
+        <p class="chapter-body">
+          Congo River in Apopka. I let you win. Simple. Nothing else to say. Continue.
+        </p>
+        <span class="chapter-tag">First Date</span>
+      </div>
+    </div>
+
+    <div class="chapter ch2">
+      <div class="chapter-photo fade-in">
+        <img src="photos/la-fitness.jpg" alt="Miranda at LA Fitness" />
+        <div class="chapter-photo-overlay"></div>
+      </div>
+      <div class="chapter-text slide-left">
+        <p class="chapter-label">Chapter Two — Our Summers</p>
+        <h2 class="chapter-year">Atlanta</h2>
+        <h3 class="chapter-title">LA Fitness, Buckhead</h3>
+        <p class="chapter-body">
+          Every day that summer. Pretty much every single day. You look like fine shii, me staring at you on "accident". <strong>We pushed each other to get better</strong> — and I think this part of our relationship is special. We both want each other to be great!
+          <br><br>
+          Same playlist, same routine, <em>same person I wanted to be next to.</em>
+        </p>
+        <span class="chapter-tag">Summer Routine</span>
+      </div>
+    </div>
+
+    <div class="chapter ch3">
+      <div class="chapter-photo fade-in">
+        <img src="photos/marthas-vineyard.jpg" alt="Martha's Vineyard morning" />
+        <div class="chapter-photo-overlay"></div>
+      </div>
+      <div class="chapter-text slide-right">
+        <p class="chapter-label">Chapter Three — The Surprise</p>
+        <h2 class="chapter-year">Martha's Vineyard</h2>
+        <h3 class="chapter-title">You Showed Up</h3>
+        <p class="chapter-body">
+          You surprised me many times, but this one of the best. Showed up on the island for my birthday on the same ferry as me and somehow wasn't seen. Honestly, props to you for being my lil <strong>sneekyyy snoook</strong>.
+          <br><br>
+          <em>You too fyee tyyy shiii gurl</em>
+        </p>
+        <span class="chapter-tag">Love ya twin</span>
+      </div>
+    </div>
+
+    <div class="chapter ch4">
+      <div class="chapter-photo fade-in">
+        <img src="photos/omac.jpg" alt="Jackson at the OMAC" />
+        <div class="chapter-photo-overlay"></div>
+      </div>
+      <div class="chapter-text slide-left">
+        <p class="chapter-label">Chapter Four — You Were There</p>
+        <h2 class="chapter-year">The OMAC</h2>
+        <h3 class="chapter-title">My Biggest Fan</h3>
+        <p class="chapter-body">
+          You pulled up to the omac to watch your boyfriend destroy the competition. I had to go mulan ponytail type locked in mode for you. <strong>IYKYK</strong>
+        </p>
+        <span class="chapter-tag">My Biggest Fan</span>
+      </div>
+    </div>
+
+    <div class="chapter ch5">
+      <div class="chapter-photo fade-in">
+        <img src="photos/park.jpg" alt="Gigi" />
+        <div class="chapter-photo-overlay"></div>
+      </div>
+      <div class="chapter-text slide-right">
+        <p class="chapter-label">Chapter Five — Our Routine</p>
+        <h2 class="chapter-year">Brooklyn</h2>
+        <h3 class="chapter-title">P-A-R-K with Gigi</h3>
+        <p class="chapter-body">
+          We can't say the word. You know which one. She loses her entire mind so we spell everything now like we're speaking in code. <strong>P-A-R-K. W-A-L-K.</strong> She isn't the smartest dried fish in the treat bag.
+          <br><br>
+          We are such a cute <em>family.</em>
+        </p>
+        <span class="chapter-tag">Our Brooklyn Life</span>
+      </div>
+    </div>
+
+    <div class="chapter ch6">
+      <div class="chapter-photo fade-in">
+        <img src="photos/journey.jpg" alt="Miranda's graduation" />
+        <div class="chapter-photo-overlay"></div>
+      </div>
+      <div class="chapter-text slide-left">
+        <p class="chapter-label">Chapter Six — Your Becoming</p>
+        <h2 class="chapter-year">The Journey</h2>
+        <h3 class="chapter-title">Case Western → UCF → NYU Langone → CRNA</h3>
+        <p class="chapter-body">
+          Leaving Case Western was hard. I watched you cry about it. But then UCF happened, and then NYU Langone, and now <strong>you're an actual real deal in the pitt nurse taking care of people every single day.</strong>
+          <br><br>
+          CRNA is next and I'm not even a little worried about it. <em>I love watching you succeed!</em>
+        </p>
+        <span class="chapter-tag">Mirrrrabelllleeeeeee, RN → CRNA</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- WAVE: chapters → game -->
+  <div class="wave-divider">
+    <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,60 C360,0 1080,120 1440,60 L1440,120 L0,120 Z" fill="#0B0E17"/>
+    </svg>
+  </div>
+
+  <!-- GAME -->
+  <section class="game-section" id="game-section">
+    <div class="game-stars" id="game-stars"></div>
+    <div class="game-progress"><div class="game-progress-bar" id="game-progress"></div></div>
+    <div class="game-container" id="game-container"></div>
+  </section>
+
+  <div class="wave-divider">
+    <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,40 C480,120 960,0 1440,80 L1440,120 L0,120 Z" fill="#FFFFFF"/>
+    </svg>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-heart">♥</div>
+    <p class="footer-text">Miranda & Jackson · 2019 – forever</p>
+  </footer>
+
+</div>
+
+<!-- PARCHMENT OVERLAY -->
+<div class="parchment-overlay" id="parchment-overlay">
+  <div class="parchment">
+    <button class="parchment-close" id="parchment-close" aria-label="Close">&times;</button>
+    <div class="parchment-seal">&#9793;</div>
+    <div class="parchment-body">
+      <span class="greeting">You made it, Miraabelle.</span>
+      <span class="clue-text">One more stop.</span>
+      <span class="clue-text">Somewhere in the city there's a spot that sells the best frozen mango you've ever had.</span>
+      <span class="clue-text">I know where it is.</span>
+      <span class="clue-text">Get dressed. I'm taking you there.</span>
+      <span class="signoff">&mdash; always yours</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  // === TERMINAL BOOT ===
+  const bootLines = [
+    { text: "> git clone https://github.com/itsthemoon/for-miranda", delay: 400 },
+    { text: "Cloning into 'for-miranda'...", delay: 1800 },
+    { text: "remote: Enumerating objects: 47, done.", delay: 3200 },
+    { text: "remote: Counting objects: 100% (47/47), done.", delay: 4000 },
+    { text: "remote: Compressing objects: 100% (31/31), done.", delay: 4800 },
+    { text: "Receiving objects: 100% (47/47), 8.94 MiB | 3.2 MiB/s, done.", delay: 5800 },
+    { text: "", delay: 7000 },
+    { text: "> cd for-miranda", delay: 7800 },
+    { text: "> type note.txt", delay: 9200 },
+    { text: "", delay: 10200 },
+    { text: "  \"hey miranda. i hid something in here for you.\"", delay: 10800, color: "#ffcc66" },
+    { text: "", delay: 12200 },
+    { text: "  Love,", delay: 13000, color: "#ffcc66" },
+    { text: "  bud (i hate when u call me this lol)", delay: 13800, color: "#ffcc66" },
+    { text: "", delay: 14500, blink: true },
+  ];
+
+  let booted = false;
+
+  function runBoot() {
+    const container = document.getElementById('boot-lines');
+    bootLines.forEach(function(line, i) {
+      setTimeout(function() {
+        const p = document.createElement('p');
+        p.textContent = line.text;
+        p.style.animationDelay = '0s';
+        if (line.color) p.style.color = line.color;
+        if (line.blink) p.classList.add('blink');
+        container.appendChild(p);
+        if (i === bootLines.length - 1) setTimeout(endBoot, 2500);
+      }, line.delay);
+    });
+  }
+
+  function endBoot() {
+    if (booted) return;
+    booted = true;
+    const boot = document.getElementById('boot');
+    const main = document.getElementById('main');
+    boot.style.transition = 'opacity 1.5s ease';
+    boot.style.opacity = '0';
+    main.classList.add('visible');
+    setTimeout(function() { boot.style.display = 'none'; }, 1500);
+  }
+
+  function skipBoot() { endBoot(); }
+  runBoot();
+
+  // === SCROLL ANIMATIONS ===
+  const scrollObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.fade-in, .slide-left, .slide-right').forEach(function(el) { scrollObserver.observe(el); });
+
+  // === STARS ===
+  (function() {
+    const starContainer = document.getElementById('game-stars');
+    for (let i = 0; i < 80; i++) {
+      const s = document.createElement('span');
+      s.style.left = Math.random() * 100 + '%';
+      s.style.top = Math.random() * 100 + '%';
+      s.style.setProperty('--dur', (2 + Math.random() * 4) + 's');
+      s.style.setProperty('--delay', (Math.random() * 3) + 's');
+      if (Math.random() > 0.7) { s.style.width = '3px'; s.style.height = '3px'; }
+      starContainer.appendChild(s);
+    }
+  })();
+
+  // === GAME DATA ===
+  // All content is static and trusted — authored by the site creator.
+  // Using DOM creation methods for all dynamic rendering.
+
+  var scenes = [
+    {
+      number: "Scene I",
+      title: "The First Night",
+      body: "You\u2019ve survived your first week at Basgiath War College. Most cadets haven\u2019t. Tonight there\u2019s a rare break \u2014 the commandant has allowed a night outside the walls.\n\nA stranger you\u2019ve been watching all week turns to you and says: \u201CSo... what are we doing tonight?\u201D",
+      choices: [
+        {
+          text: "\u201CThere\u2019s a game in the village \u2014 windmills, obstacles, the works. Loser buys drinks.\u201D",
+          response: "They grin. \u201CYou\u2019re on.\u201D You lose. Badly. You don\u2019t care even a little bit. Something about the way they laugh at the windmill obstacle makes you forget you were even keeping score."
+        },
+        {
+          text: "\u201CWeapons training. I could use the practice.\u201D",
+          response: "They raise an eyebrow. \u201CYou\u2019re really going to waste a free night on practice?\u201D ...Fair point. Twenty minutes later you\u2019re at the village game anyway, losing badly and not caring at all."
+        }
+      ]
+    },
+    {
+      number: "Scene II",
+      title: "The Routine",
+      body: "Months pass. You and this person have fallen into something. Every morning before dawn, you both show up at the training grounds. Same spot. Same time. Your squad thinks you\u2019ve lost it.",
+      choices: [
+        {
+          text: "The routine is what keeps you coming back. Knowing they\u2019ll be there.",
+          response: "It\u2019s not about the training anymore. It\u2019s the playlist they hum under their breath. The way they push you to go one more round. It\u2019s having someone to be annoyingly consistent with \u2014 every single day."
+        },
+        {
+          text: "You need to be the strongest rider in your year. That\u2019s why you keep showing up.",
+          response: "Sure. That\u2019s definitely why. It has nothing to do with the way you keep glancing over between sets. Nothing at all. ...You show up again tomorrow. Same time. Same spot. Same person."
+        }
+      ]
+    },
+    {
+      number: "Scene III",
+      title: "The Island",
+      body: "Your birthday. You\u2019ve been stationed at a coastal outpost \u2014 beautiful, but remote. You\u2019ve told no one the date. You\u2019re sitting on the cliffs watching the water when you hear wingbeats behind you.",
+      choices: [
+        {
+          text: "\u201CYou came.\u201D",
+          response: "They land. No grand speech. No wrapped gift. They just... came. Flew across open water because it was your birthday and they didn\u2019t want you to be alone for it. That\u2019s the kind of thing you can\u2019t buy someone."
+        },
+        {
+          text: "\u201CHow did you even find me out here?\u201D",
+          response: "\u201CI always know where you are.\u201D Dramatic? Absolutely. But they crossed an ocean for your birthday without being asked. You\u2019re allowed to be a little dramatic back."
+        }
+      ]
+    },
+    {
+      number: "Scene IV",
+      title: "The Arena",
+      body: "War games. The arena is packed. You\u2019re on the field \u2014 the noise is deafening, the crowd is a blur. But right before the horn sounds, you look up into the stands.",
+      choices: [
+        {
+          text: "They\u2019re there. And knowing that changes everything.",
+          response: "It\u2019s not about winning anymore. It\u2019s about having someone in the stands who chose to be there. Not because they had to. Because they wanted to watch you. That\u2019s love in its simplest, most stubborn form."
+        },
+        {
+          text: "Focus. Win first. Feelings later.",
+          response: "You try. You really do. But between rounds you look up again, and they\u2019re still there. Still watching. Still choosing you from the cheap seats. Yeah. Focus is completely gone."
+        }
+      ]
+    },
+    {
+      number: "Scene V",
+      title: "The Creature",
+      body: "Somewhere along the way, you adopted a small, ridiculously fluffy creature. Brown fur. Chaotic energy. Completely unhinged when it hears certain words.\n\nYour partner figured out a system: spell it.",
+      choices: [
+        {
+          text: "P-A-R-K. W-A-L-K. ...She cracked both codes already, honestly.",
+          response: "This tiny, furry monster has turned two grown dragon riders into people who spell basic words like they\u2019re guarding classified information. You wouldn\u2019t trade it for anything in the world."
+        },
+        {
+          text: "Just say the word. Deal with the chaos.",
+          response: "You said it. She lost her entire mind. Your partner looked at you like you\u2019d just committed high treason against the household. \u201CWe SPELL it. We have been over this.\u201D"
+        }
+      ]
+    },
+    {
+      number: "Scene VI",
+      title: "The Harder Path",
+      body: "A crossroads. The war college is familiar now \u2014 safe, known. But there\u2019s another path. The healer\u2019s path. It means leaving behind everything you\u2019ve built here. Starting over.\n\nYou cry the night before the decision.",
+      choices: [
+        {
+          text: "You take the harder road. It doesn\u2019t feel right \u2014 not yet. But it will.",
+          response: "You leave behind what\u2019s familiar. You start over. And again. And again. But somewhere between the tears and the sleepless nights and the endless studying \u2014 you become exactly who you were always supposed to be. And you\u2019re not done yet."
+        },
+        {
+          text: "You stay. Safe is safe for a reason.",
+          response: "Safe IS good. But you keep thinking about what could have been. And deep down, you know \u2014 you\u2019ve never been the kind of person who plays it safe. Not really."
+        }
+      ]
+    }
+  ];
+
+  var revealData = [
+    { text: "Wait.", cls: "" },
+    { text: "Did any of that feel... familiar?", cls: "" },
+    { text: "", cls: "spacer" },
+    { text: "", cls: "highlight", fantasy: "The village game", real: "Congo River. Our first date." },
+    { text: "", cls: "highlight", fantasy: "The training grounds", real: "LA Fitness, Buckhead. Every day that summer." },
+    { text: "", cls: "highlight", fantasy: "The coastal outpost", real: "Martha\u2019s Vineyard. You showed up." },
+    { text: "", cls: "highlight", fantasy: "The arena stands", real: "The OMAC. My biggest fan." },
+    { text: "", cls: "highlight", fantasy: "The fluffy creature", real: "...Gigi. Obviously." },
+    { text: "", cls: "highlight", fantasy: "The healer\u2019s path", real: "Case Western \u2192 UCF \u2192 NYU Langone \u2192 CRNA." },
+    { text: "", cls: "spacer" },
+    { text: "This was never a game, Miranda.", cls: "big" },
+    { text: "It was always about us.", cls: "big" },
+    { text: "", cls: "spacer" },
+    { text: "P.S. \u2014 The natural deodorant thing. We still need to talk.", cls: "" },
+  ];
+
+  var currentScene = -1;
+  var gameContainer = document.getElementById('game-container');
+  var progressBar = document.getElementById('game-progress');
+
+  function updateProgress() {
+    var pct = Math.round(((currentScene + 1) / scenes.length) * 100);
+    progressBar.style.width = pct + '%';
+  }
+
+  function clearContainer() {
+    while (gameContainer.firstChild) {
+      gameContainer.removeChild(gameContainer.firstChild);
+    }
+  }
+
+  function el(tag, className, textContent) {
+    var e = document.createElement(tag);
+    if (className) e.className = className;
+    if (textContent) e.textContent = textContent;
+    return e;
+  }
+
+  function showIntro() {
+    clearContainer();
+    var intro = el('div', 'game-intro');
+
+    intro.appendChild(el('p', 'game-intro-eyebrow', 'A Fourth Wing Story'));
+
+    var title = el('h2', 'game-intro-title');
+    title.appendChild(document.createTextNode("A Rider\u2019s "));
+    var em = document.createElement('em');
+    em.textContent = "Choice";
+    title.appendChild(em);
+    intro.appendChild(title);
+
+    var sub = el('p', 'game-intro-sub');
+    sub.textContent = "You\u2019ve read the chapters. Now play through them. Choose wisely \u2014 or don\u2019t. Every path leads somewhere real.";
+    intro.appendChild(sub);
+
+    var btn = el('button', 'game-btn', 'Begin');
+    btn.addEventListener('click', function() { startGame(); });
+    intro.appendChild(btn);
+
+    gameContainer.appendChild(intro);
+  }
+
+  function startGame() {
+    currentScene = -1;
+    nextScene();
+  }
+
+  function nextScene() {
+    currentScene++;
+    if (currentScene >= scenes.length) {
+      showReveal();
+      return;
+    }
+
+    updateProgress();
+    clearContainer();
+
+    var s = scenes[currentScene];
+    var scene = el('div', 'game-scene');
+
+    scene.appendChild(el('p', 'scene-number', s.number));
+    scene.appendChild(el('h3', 'scene-title', s.title));
+
+    var body = el('div', 'scene-body');
+    // Split body text by newlines for paragraphs
+    var paragraphs = s.body.split('\n\n');
+    paragraphs.forEach(function(para) {
+      var p = document.createElement('p');
+      // Handle italic markers
+      if (para.indexOf('\u201C') !== -1 && para.indexOf('\u201D') !== -1) {
+        p.textContent = para;
+        p.style.color = '#FFB703';
+        p.style.fontStyle = 'italic';
+      } else {
+        p.textContent = para;
+      }
+      body.appendChild(p);
+    });
+    scene.appendChild(body);
+
+    var choicesDiv = el('div', 'scene-choices');
+    choicesDiv.id = 'choices';
+
+    s.choices.forEach(function(choice, idx) {
+      var btn = el('button', 'scene-choice', choice.text);
+      btn.addEventListener('click', function() { pickChoice(idx); });
+      choicesDiv.appendChild(btn);
+    });
+
+    scene.appendChild(choicesDiv);
+    scene.appendChild(el('div', '', '')).id = 'response-area';
+
+    gameContainer.appendChild(scene);
+  }
+
+  function pickChoice(idx) {
+    var s = scenes[currentScene];
+    var choice = s.choices[idx];
+    var buttons = gameContainer.querySelectorAll('.scene-choice');
+
+    buttons.forEach(function(btn, i) {
+      if (i === idx) btn.classList.add('picked');
+      else btn.classList.add('dimmed');
+      btn.disabled = true;
+    });
+
+    var area = document.getElementById('response-area');
+
+    var resp = el('div', 'scene-response');
+    var respP = el('p', '', choice.response);
+    resp.appendChild(respP);
+    area.appendChild(resp);
+
+    var contBtn = el('button', 'game-btn outline', 'Continue');
+    contBtn.style.marginTop = '28px';
+    contBtn.addEventListener('click', function() { nextScene(); });
+    area.appendChild(contBtn);
+  }
+
+  function showReveal() {
+    progressBar.style.width = '100%';
+    clearContainer();
+
+    var reveal = el('div', 'game-reveal');
+    reveal.id = 'reveal';
+
+    revealData.forEach(function(line, i) {
+      var div = document.createElement('div');
+      var classes = 'reveal-line';
+      if (line.cls) classes += ' ' + line.cls;
+
+      if (line.fantasy && line.real) {
+        classes += ' reveal-mapping';
+        div.className = classes;
+
+        var fantasy = el('span', 'fantasy', line.fantasy);
+        var arrow = el('span', 'arrow', '\u2192');
+        var real = el('span', 'real', line.real);
+
+        div.appendChild(fantasy);
+        div.appendChild(arrow);
+        div.appendChild(real);
+      } else if (line.cls === 'spacer') {
+        div.className = classes;
+        div.appendChild(document.createTextNode('\u00A0'));
+      } else if (line.cls === 'big' && line.text.indexOf('about us') !== -1) {
+        div.className = classes;
+        div.appendChild(document.createTextNode('It was always '));
+        var emEl = document.createElement('em');
+        emEl.textContent = 'about us.';
+        div.appendChild(emEl);
+      } else {
+        div.className = classes;
+        div.textContent = line.text;
+      }
+
+      reveal.appendChild(div);
+
+      setTimeout(function() {
+        div.classList.add('show');
+      }, 600 + i * 700);
+    });
+
+    gameContainer.appendChild(reveal);
+
+    // Show the wax seal after all reveal lines have appeared
+    var sealDelay = 600 + revealData.length * 700 + 800;
+    setTimeout(function() {
+      var sealWrapper = el('div', 'seal-wrapper');
+      sealWrapper.style.textAlign = 'center';
+
+      var hint = el('p', 'seal-hint', 'break the warding');
+      sealWrapper.appendChild(hint);
+
+      var sealBtn = document.createElement('button');
+      sealBtn.className = 'seal-btn';
+      var icon = el('span', 'seal-icon', '\u2726');
+      sealBtn.appendChild(icon);
+      sealBtn.addEventListener('click', function() {
+        openParchment();
+      });
+      sealWrapper.appendChild(sealBtn);
+
+      reveal.appendChild(sealWrapper);
+
+      // Trigger the show animation after a frame
+      requestAnimationFrame(function() {
+        requestAnimationFrame(function() {
+          sealWrapper.classList.add('show');
+        });
+      });
+    }, sealDelay);
+  }
+
+  // Parchment
+  var parchmentOverlay = document.getElementById('parchment-overlay');
+  var parchmentClose = document.getElementById('parchment-close');
+
+  function openParchment() {
+    parchmentOverlay.classList.add('show');
+  }
+
+  parchmentClose.addEventListener('click', function() {
+    parchmentOverlay.classList.remove('show');
+  });
+
+  parchmentOverlay.addEventListener('click', function(e) {
+    if (e.target === parchmentOverlay) {
+      parchmentOverlay.classList.remove('show');
+    }
+  });
+
+  // Show intro when game section scrolls into view
+  var gameObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        showIntro();
+        gameObserver.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  gameObserver.observe(document.getElementById('game-section'));
+
+  // === WATER RIPPLES ===
+  var lastRipple = 0;
+  var gameSection = document.getElementById('game-section');
+  var bootEl = document.getElementById('boot');
+
+  document.addEventListener('mousemove', function(e) {
+    var now = Date.now();
+    if (now - lastRipple < 120) return; // throttle
+    if (bootEl && bootEl.style.display !== 'none' && bootEl.style.opacity !== '0') return;
+
+    lastRipple = now;
+
+    var ripple = document.createElement('div');
+    ripple.className = 'ripple';
+
+    // Use purple ripples over the game section
+    var gameRect = gameSection.getBoundingClientRect();
+    if (e.clientY >= gameRect.top && e.clientY <= gameRect.bottom) {
+      ripple.classList.add('dark');
+    }
+
+    ripple.style.left = e.clientX + 'px';
+    ripple.style.top = e.clientY + 'px';
+    document.body.appendChild(ripple);
+
+    setTimeout(function() {
+      if (ripple.parentNode) ripple.parentNode.removeChild(ripple);
+    }, 1300);
+  });
+</script>
+</body>
+</html>
